@@ -1,0 +1,25 @@
+name: agilecoder
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.8,<3.12  # Python 3.8 to 3.11 recommended
+  - pip
+  - pip:
+      - openai==0.28.1
+      - tiktoken==0.6.0
+      - markdown==3.5.2
+      - colorama
+      - nltk==3.8.1
+      - flask
+      - tenacity==8.2.3
+      - python-dotenv
+      - codebleu==0.7.0
+      - google-auth
+      - google-auth-oauthlib
+      - google-auth-httplib2
+      - anthropic
+      - pygame
+      - numpy
+      - git+https://github.com/tree-sitter/tree-sitter-python.git@master
+      - strsimpy==0.2.1
