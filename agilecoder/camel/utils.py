@@ -84,7 +84,7 @@ def num_tokens_from_messages(
 
     if model in {
         ModelType.GPT_3_5_TURBO, ModelType.GPT_4, ModelType.GPT_4_32k,
-        ModelType.STUB, ModelType.GPT_3_5_AZURE, ModelType.CLAUDE
+        ModelType.STUB, ModelType.GPT_3_5_AZURE, ModelType.CLAUDE, ModelType.OLLAMA
     }:
         return count_tokens_openai_chat_models(messages, encoding)
     else:
@@ -117,6 +117,8 @@ def get_model_token_limit(model: ModelType) -> int:
         return 32768
     elif model == ModelType.CLAUDE:
         return 20000
+    elif model == ModelType.OLLAMA:
+        return 20000
     elif model == ModelType.STUB:
         return 4096
     else:
@@ -140,15 +142,16 @@ def openai_api_key_required(func: F) -> F:
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        from agilecoder.camel.agents.chat_agent import ChatAgent
-        if not isinstance(self, ChatAgent):
-            raise ValueError("Expected ChatAgent")
-        if self.model == ModelType.STUB:
-            return func(self, *args, **kwargs)
-        elif 'OPENAI_API_KEY' in os.environ or 'API_KEY' in os.environ:
-            return func(self, *args, **kwargs)
-        else:
-            raise ValueError('OpenAI API key not found.')
+        return func(self, *args, **kwargs)
+        # from agilecoder.camel.agents.chat_agent import ChatAgent
+        # if not isinstance(self, ChatAgent):
+        #     raise ValueError("Expected ChatAgent")
+        # if self.model == ModelType.STUB:
+        #     return func(self, *args, **kwargs)
+        # elif 'OPENAI_API_KEY' in os.environ or 'API_KEY' in os.environ:
+        #     return func(self, *args, **kwargs)
+        # else:
+        #     raise ValueError('OpenAI API key not found.')
 
     return wrapper
 
