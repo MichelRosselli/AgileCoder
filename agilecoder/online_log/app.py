@@ -17,10 +17,12 @@ from flask import Flask, send_from_directory, request, jsonify, redirect, render
 
 app = Flask(__name__, static_folder='static')
 
-app.logger.setLevel(logging.ERROR)
+# app.logger.setLevel(logging.ERROR)
+app.logger.setLevel(logging.INFO)
 
 log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+# log.setLevel(logging.ERROR)
+log.setLevel(logging.INFO)
 
 messages = []
 logs = []
@@ -163,6 +165,6 @@ def find_avatar_url(role):
 
 
 if __name__ == "__main__":
-    from run_api import run_task
+    from agilecoder.run_api import run_task
     print("please visit http://127.0.0.1:8000/ for demo")
     app.run(debug=True, port=8000)
