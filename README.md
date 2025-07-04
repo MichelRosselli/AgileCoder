@@ -50,7 +50,17 @@ Website: https://fsoft-ai4code.github.io/agilecoder/
 AgileCoder can be installed easily through pip:
 ```python
 pip install agilecoder
+pip install git+https://github.com/tree-sitter/tree-sitter-python.git@master
 ```
+
+Alternatively, if you want to install AgileCoder in editable mode (recommended for development), you can run:
+```python
+pip install -e AgileCoder
+pip install git+https://github.com/tree-sitter/tree-sitter-python.git@master
+```
+
+> **Note:**  
+> It is strongly recommended to use **Python 3.11** for best compatibility and performance.
 
 If you want to clone the repository, be sure to switch to the *new-flow* branch to access the latest source code.
 
@@ -71,6 +81,16 @@ API_TYPE=azure
 API_VERSION=your_api_version
 API_ENGINE=your_api_engine
 ```
+
+## 🏠 Using Local Models with Ollama
+
+If you want to use local models with [Ollama](https://ollama.com/), you need to set the following environment variables:
+
+```bash
+MODEL_NAME=llama3.2:latest
+BASE_URL='http://localhost:11434/api/chat'
+```
+
 For other models, please refer to [setup_model.md](setup_model.md)
 ## Sample Usage
 To generate software using AgileCoder, use the following command:
