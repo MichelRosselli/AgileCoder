@@ -33,6 +33,7 @@ from anthropic.lib.vertex import AnthropicVertex
 import google.auth.transport
 import anthropic
 
+# TODO: handle the case when the credentials are not set
 # vertex_credentials = Credentials.from_service_account_info(
 #     json.loads(open("../key.json", "r").read()),
 #     scopes=[

@@ -143,6 +143,7 @@ def openai_api_key_required(func: F) -> F:
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         return func(self, *args, **kwargs)
+        # TODO: handle case where local model is used and no API key is required
         # from agilecoder.camel.agents.chat_agent import ChatAgent
         # if not isinstance(self, ChatAgent):
         #     raise ValueError("Expected ChatAgent")
