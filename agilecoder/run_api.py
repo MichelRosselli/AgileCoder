@@ -10,6 +10,7 @@ sys.path.append(root)
 from agilecoder.components.chat_chain import ChatChain
 from agilecoder.online_log.app import send_online_log
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -28,6 +29,7 @@ class BufferHandler(logging.Handler):
 
     def emit(self, record):
         self.buffer.append(self.format(record))
+
 
 def get_config(company):
     """
@@ -61,6 +63,7 @@ def get_config(company):
 
     return tuple(config_paths)
 
+
 def run_task(args):
     # Start AgileCoder
 
@@ -71,25 +74,46 @@ def run_task(args):
 
     home_path = os.path.expanduser("~")
     warehouse_path = os.path.join(home_path, "AgileCoder", "WareHouse")
-    os.makedirs(warehouse_path, exist_ok = True)
-    args2type = {'GPT_3_5_TURBO': ModelType.GPT_3_5_TURBO, 'GPT_4': ModelType.GPT_4, 'GPT_4_32K': ModelType.GPT_4_32k, 'GPT_3_5_AZURE': ModelType.GPT_3_5_AZURE,'CLAUDE':ModelType.CLAUDE}
+    os.makedirs(warehouse_path, exist_ok=True)
+    args2type = {'GPT_3_5_TURBO': ModelType.GPT_3_5_TURBO, 'GPT_4': ModelType.GPT_4, 'GPT_4_32K': ModelType.GPT_4_32k,
+                 'GPT_3_5_AZURE': ModelType.GPT_3_5_AZURE, 'CLAUDE': ModelType.CLAUDE, 'OLLAMA': ModelType.OLLAMA}
     chat_chain = ChatChain(config_path=config_path,
-                        config_phase_path=config_phase_path,
-                        config_role_path=config_role_path,
-                        task_prompt=args.task,
-                        project_name=args.name,
-                        org_name=args.org,
-                        model_type=args2type[args.model])
+                           config_phase_path=config_phase_path,
+                           config_role_path=config_role_path,
+                           task_prompt=args.task,
+                           project_name=args.name,
+                           org_name=args.org,
+                           model_type=args2type[args.model])
 
     # ----------------------------------------
     #          Init Log
     # ----------------------------------------
-    logging.basicConfig(filename=chat_chain.log_filepath, level=logging.INFO,
-                        format='[%(asctime)s %(levelname)s] %(message)s',
-                        datefmt='%Y-%d-%m %H:%M:%S', encoding="utf-8")
+    # Create the logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    # File handler
+    file_handler = logging.FileHandler(chat_chain.log_filepath, encoding="utf-8")
+    file_handler.setLevel(logging.INFO)
+    file_formatter = logging.Formatter('[%(asctime)s %(levelname)s] %(message)s', datefmt='%Y-%d-%m %H:%M:%S')
+    file_handler.setFormatter(file_formatter)
+
+    # Console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_formatter = logging.Formatter('[%(asctime)s %(levelname)s] %(message)s', datefmt='%Y-%d-%m %H:%M:%S')
+    console_handler.setFormatter(console_formatter)
+
+    # Add both handlers to the logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    # logging.basicConfig(filename=chat_chain.log_filepath, level=logging.INFO,
+    #                     format='[%(asctime)s %(levelname)s] %(message)s',
+    #                     datefmt='%Y-%d-%m %H:%M:%S', encoding="utf-8")
     buffer_handler = BufferHandler(level=logging.INFO,
-                        format='[%(asctime)s %(levelname)s] %(message)s',
-                        datefmt='%Y-%d-%m %H:%M:%S', encoding="utf-8")
+                                   format='[%(asctime)s %(levelname)s] %(message)s',
+                                   datefmt='%Y-%d-%m %H:%M:%S', encoding="utf-8")
     buffer_handler.setLevel(logging.INFO)  # Set the handler level to DEBUG
     # logger.addHandler(buffer_handler)
     logging.root.addHandler(buffer_handler)
