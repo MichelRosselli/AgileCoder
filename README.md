@@ -90,6 +90,7 @@ If you want to use local models with [Ollama](https://ollama.com/), you need to 
 MODEL_NAME=llama3.2:latest
 BASE_URL='http://localhost:11434/api/chat'
 ```
+> 👉 For more detailed information on how to run local models with Ollama, please refer to the [Section below](#running-agilecoder-in-editable-mode-for-local-ollama-models).
 
 For other models, please refer to [setup_model.md](setup_model.md)
 ## Sample Usage
@@ -115,6 +116,32 @@ agilecoder --help
 
 This will display the help message with a list of supported options and their descriptions.
 Feel free to explore different software requirements and experiment with AgileCoder to generate various types of software projects tailored to your needs.
+
+### Running AgileCoder in Editable Mode (For Local Ollama Models)
+If AgileCoder has been installed in editable mode, you can also run it directly via the CLI Python script:
+
+```bash
+python agilecoder/cli.py --task "<your software requirements>"
+```
+
+#### Using Local Models with Ollama
+To use local models via Ollama, simply add the ``--model "OLLAMA"`` option. For example:
+```bash
+python agilecoder/cli.py --task "<your software requirements>" --model "OLLAMA"
+```
+> ⚠️ When using Ollama, make sure to set the following environment variables before running the command:
+> ```bash
+> MODEL_NAME=your_model_name
+> BASE_URL=your_ollama_base_url
+> ```
+> Replace ``your_model_name`` with the name of the Ollama model (e.g., ``llama3.2:latest``) and ``your_ollama_base_url`` with the local or remote URL where Ollama is accessible (e.g., ``http://localhost:11434/api/chat``).
+
+> 💡 Before running ``cli.py``, it is recommended to start the logging service with:
+> ```bash
+> python agilecoder/online_log/app.py
+> ```
+> This will enable real-time logging of task processing and improve debugging and monitoring.
+
 
 ## Demo Web UI
 
